@@ -1,8 +1,7 @@
 class CoindexPageScraper {
   // fetchURL(url) {
   scrape(url) {
-    const myInit = { header: { origin: null } };
-    return fetch(url, myInit)
+    return fetch(`${url}`)
       .then(result => {
         return result.text();
       })
@@ -16,6 +15,9 @@ class CoindexPageScraper {
       });
   }
   scraper(doc) {
+    let coinPrice;
+    let dayHigh;
+    let dayLow;
     let marketTable = doc.getElementById('market-table');
     let tBody = marketTable.childNodes[3];
     let tRow = tBody.childNodes[1];
@@ -26,23 +28,31 @@ class CoindexPageScraper {
       foo = foo.slice(22);
     }
     let coinLogoUrl = 'https://www.worldcoinindex.com/' + foo;
-    let coinPriceDollars = tRow.childNodes[7].innerText.trim();
-    let coinPrice = this.trimCoinPrice(coinPriceDollars);
-    let dayHigh = tRow.childNodes[11].childNodes[1].innerHTML.trim();
-    dayHigh = this.trimCoinHighLow(dayHigh);
-    let dayLow = tRow.childNodes[13].childNodes[1].innerHTML.trim();
-    dayLow = this.trimCoinHighLow(dayLow);
+    let coinPriceBitcoin = tRow.childNodes[7].innerText.trim();
+    //If statement that fixes a bug with the currency displayed
+    if (coinPriceBitcoin.search(/[^$]*/) !== true) {
+      coinPrice = 'Ƀ' + coinPriceBitcoin;
+      dayHigh = tRow.childNodes[11].childNodes[1].innerHTML.trim();
+      dayLow = tRow.childNodes[13].childNodes[1].innerHTML.trim();
+    } else {
+      coinPrice = this.coinPriceInDollars(coinPriceBitcoin);
+      dayHigh = tRow.childNodes[11].childNodes[1].innerHTML.trim();
+      dayHigh = this.trimCoinHighLow(dayHigh);
+      dayLow = tRow.childNodes[13].childNodes[1].innerHTML.trim();
+      dayLow = this.trimCoinHighLow(dayLow);
+    }
+
     return {
       coinName, // ES6 shortcut coinName: coinName
       coinPercentage: `24Hr Change: ` + coinPercentage,
       coinLogoUrl,
       coinPrice: `Price: ` + coinPrice,
-      dayHigh: `24Hr High: ` + dayHigh,
-      dayLow: `24Hr Low: ` + dayLow
+      dayHigh: `24Hr High: Ƀ` + dayHigh,
+      dayLow: `24Hr Low: Ƀ` + dayLow
     };
   }
   //helper method to fix coin price bug
-  trimCoinPrice(arg) {
+  coinPriceInDollars(arg) {
     arg = arg.slice(3);
     let result = parseFloat(arg);
     if (result < 0.01) {
