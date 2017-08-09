@@ -1,9 +1,8 @@
 class CoindexPageScraper {
   // fetchURL(url) {
   scrape(url) {
-    return fetch(`http://cors-bypass-proxy.axiomlogic.com/${url}`, {
-      method: 'get'
-    })
+    const myInit = { header: { origin: null } };
+    return fetch(url, myInit)
       .then(result => {
         return result.text();
       })

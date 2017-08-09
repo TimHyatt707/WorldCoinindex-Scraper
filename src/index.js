@@ -34,20 +34,23 @@ function main() {
 
 function widgetFactory(arg) {
   const node = div(
-    { class: 'container' },
+    { class: 'row' },
     div(
-      { class: 'card horizontal' },
+      { class: 'col s12 m6' },
       div(
-        { class: 'card-image center' },
-        img({ src: arg.coinLogoUrl, alt: 'Image Missing' })
-      ),
-      div(
-        { class: 'card-content' },
-        p({ class: 'row' }, arg.coinName),
-        p({ class: 'row' }, arg.coinPercentage),
-        p({ class: 'row' }, arg.coinPrice),
-        p({ class: 'row' }, arg.dayHigh),
-        p({ class: 'row' }, arg.dayLow)
+        { class: 'card horizontal' },
+        div(
+          { class: 'card-image center' },
+          img({ src: arg.coinLogoUrl, alt: 'Image Missing' })
+        ),
+        div(
+          { class: 'card-content' },
+          p({ class: 'row' }, arg.coinName),
+          p({ class: 'row' }, arg.coinPercentage),
+          p({ class: 'row' }, arg.coinPrice),
+          p({ class: 'row' }, arg.dayHigh),
+          p({ class: 'row' }, arg.dayLow)
+        )
       )
     )
   );
@@ -58,10 +61,7 @@ function buildNavbar() {
   const node = nav(
     div(
       { class: 'nav-wrapper grey darken-4' },
-      a(
-        { href: '#', class: 'brand-logo text-white' },
-        'Cryptocurrency Widget Generator'
-      )
+      a({ href: '#', class: 'brand-logo' }, 'Cryptocurrency Widget Generator')
     )
   );
   document.body.appendChild(node);
