@@ -1,7 +1,7 @@
 class CoindexPageScraper {
   // fetchURL(url) {
   scrape(url) {
-    return fetch(`${url}`)
+    return fetch(`http://cors-anywhere.herokuapp.com/${url}`)
       .then(result => {
         return result.text();
       })
@@ -15,6 +15,7 @@ class CoindexPageScraper {
       });
   }
   scraper(doc) {
+    console.log(doc);
     let coinPrice;
     let dayHigh;
     let dayLow;
@@ -27,13 +28,16 @@ class CoindexPageScraper {
     if (foo.startsWith('http://local')) {
       foo = foo.slice(22);
     }
+    let coinUrl = `https://www.worldcoinindex.com/coin/` + coinName;
     let coinLogoUrl = 'https://www.worldcoinindex.com/' + foo;
     let coinPriceBitcoin = tRow.childNodes[7].innerText.trim();
     //If statement that fixes a bug with the currency displayed
-    if (coinPriceBitcoin.search(/[^$]*/) !== true) {
+    if (coinPriceBitcoin.startsWith('$') !== true) {
       coinPrice = 'Ƀ' + coinPriceBitcoin;
       dayHigh = tRow.childNodes[11].childNodes[1].innerHTML.trim();
+      dayHigh = ' Ƀ' + dayHigh;
       dayLow = tRow.childNodes[13].childNodes[1].innerHTML.trim();
+      dayLow = ' Ƀ' + dayLow;
     } else {
       coinPrice = this.coinPriceInDollars(coinPriceBitcoin);
       dayHigh = tRow.childNodes[11].childNodes[1].innerHTML.trim();
@@ -47,8 +51,9 @@ class CoindexPageScraper {
       coinPercentage: `24Hr Change: ` + coinPercentage,
       coinLogoUrl,
       coinPrice: `Price: ` + coinPrice,
-      dayHigh: `24Hr High: Ƀ` + dayHigh,
-      dayLow: `24Hr Low: Ƀ` + dayLow
+      dayHigh: `24Hr High: ` + dayHigh,
+      dayLow: `24Hr Low: ` + dayLow,
+      coinUrl
     };
   }
   //helper method to fix coin price bug
@@ -56,7 +61,7 @@ class CoindexPageScraper {
     arg = arg.slice(3);
     let result = parseFloat(arg);
     if (result < 0.01) {
-      result = '$' + result.toFixed(8) + ` It's worth less than a penny!`;
+      result = '$' + result.toFixed(8);
     } else {
       result = '$' + result.toFixed(2);
     }

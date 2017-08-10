@@ -1,6 +1,6 @@
 const { div, form, button, textarea, label } = require('elementx');
 
-function buildForm() {
+function Form() {
   const node = div(
     { class: 'container' },
     div(
@@ -28,7 +28,11 @@ function buildForm() {
       )
     )
   );
-  document.body.appendChild(node);
+  return node;
+  // const bottomRow = div({ id: 'bottomRow', class: 'row' });
+  // let $root = document.getElementById('root');
+  // $root.appendChild(node);
+  // $root.appendChild(bottomRow);
 }
 
-module.exports = buildForm;
+module.exports = Form;

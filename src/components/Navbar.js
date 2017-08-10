@@ -1,6 +1,6 @@
 const { div, span, nav } = require('elementx');
 
-function buildNavbar() {
+function Navbar() {
   const node = nav(
     div(
       { class: 'nav-wrapper grey darken-4' },
@@ -10,7 +10,7 @@ function buildNavbar() {
       )
     )
   );
-  document.body.appendChild(node);
+  return node;
 }
 
-module.exports = buildNavbar;
+module.exports = Navbar;
