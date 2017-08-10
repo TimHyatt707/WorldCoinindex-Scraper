@@ -15,37 +15,56 @@ class CoindexPageScraper {
       });
   }
   scraper(doc) {
-    console.log(doc);
     let coinPrice;
     let dayHigh;
     let dayLow;
-    let marketTable = doc.getElementById('market-table');
-    let tBody = marketTable.childNodes[3];
-    let tRow = tBody.childNodes[1];
-    let coinName = tRow.childNodes[3].childNodes[1].innerHTML;
-    let coinPercentage = tRow.childNodes[9].childNodes[0].innerHTML;
-    let foo = tRow.childNodes[1].childNodes[1].src;
-    if (foo.startsWith('http://local')) {
-      foo = foo.slice(22);
-    }
+    let coinName = doc.querySelector('.bitcoinName').querySelector('h1')
+      .innerHTML;
+    let coinPercentage = doc
+      .querySelector('.coin-percentage')
+      .querySelector('span').innerHTML;
     let coinUrl = `https://www.worldcoinindex.com/coin/` + coinName;
-    let coinLogoUrl = 'https://www.worldcoinindex.com/' + foo;
-    let coinPriceBitcoin = tRow.childNodes[7].innerText.trim();
+    let coinLogoUrl =
+      `https://www.worldcoinindex.com/Content/img/coins/v-636096405508202311/` +
+      coinName +
+      '.png';
+    let coinPriceBitcoin = doc.querySelector('.span-coinprice').innerHTML;
     //If statement that fixes a bug with the currency displayed
-    if (coinPriceBitcoin.startsWith('$') !== true) {
+    if (coinPriceBitcoin.includes('$') !== true) {
       coinPrice = 'Ƀ' + coinPriceBitcoin;
-      dayHigh = tRow.childNodes[11].childNodes[1].innerHTML.trim();
+      dayHigh = doc
+        .querySelector('.coin-high')
+        .querySelector('span')
+        .innerHTML.trim();
       dayHigh = ' Ƀ' + dayHigh;
-      dayLow = tRow.childNodes[13].childNodes[1].innerHTML.trim();
+      dayLow = doc
+        .querySelector('.coin-low')
+        .querySelector('span')
+        .innerHTML.trim();
       dayLow = ' Ƀ' + dayLow;
     } else {
-      coinPrice = this.coinPriceInDollars(coinPriceBitcoin);
-      dayHigh = tRow.childNodes[11].childNodes[1].innerHTML.trim();
+      let coinPriceInDollars = arg => {
+        arg = arg.slice(3);
+        let result = parseFloat(arg);
+        if (result < 0.01) {
+          result = '$' + result.toFixed(8);
+        } else {
+          result = '$' + result.toFixed(2);
+        }
+        return result;
+      };
+      coinPrice = coinPriceInDollars(coinPriceBitcoin.trim());
+      dayHigh = doc
+        .querySelector('.coin-high')
+        .querySelector('span')
+        .innerHTML.trim();
       dayHigh = this.trimCoinHighLow(dayHigh);
-      dayLow = tRow.childNodes[13].childNodes[1].innerHTML.trim();
+      dayLow = doc
+        .querySelector('.coin-low')
+        .querySelector('span')
+        .innerHTML.trim();
       dayLow = this.trimCoinHighLow(dayLow);
     }
-
     return {
       coinName, // ES6 shortcut coinName: coinName
       coinPercentage: `24Hr Change: ` + coinPercentage,
@@ -55,17 +74,6 @@ class CoindexPageScraper {
       dayLow: `24Hr Low: ` + dayLow,
       coinUrl
     };
-  }
-  //helper method to fix coin price bug
-  coinPriceInDollars(arg) {
-    arg = arg.slice(3);
-    let result = parseFloat(arg);
-    if (result < 0.01) {
-      result = '$' + result.toFixed(8);
-    } else {
-      result = '$' + result.toFixed(2);
-    }
-    return result;
   }
   trimCoinHighLow(arg) {
     arg = arg.slice(0);

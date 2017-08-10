@@ -2,6 +2,7 @@ const { div, p, img, button } = require('elementx');
 let CoindexScraper = require('./../scrapers/CoindexPagescraper');
 
 function Widgets(arg) {
+  console.log(arg);
   //Displays an alert if a user inputs a widget that already exists
   if (cardCheck(arg)) {
     return alert('That widget is already displayed!');
@@ -33,28 +34,15 @@ function Widgets(arg) {
         )
       )
     );
-    let bottomRow = document.getElementById('bottomRow');
-    bottomRow.appendChild(node);
-    let percentColor = document.getElementsByClassName('percentColor');
+
     //Add event listener for update button
-    let updateBtn = document.getElementsByClassName('updateBtn');
-    for (let i = 0; i < updateBtn.length; i++) {
-      updateBtn[i].addEventListener('click', () => {
-        event.preventDefault();
-        //When the user presses the update button, information is updated.
-        updateButton(arg);
-      });
-    }
-    let cardCounter = 0;
-    for (let i = cardCounter; i < cardCounter + 1; i++) {
-      if (percentColor[i].innerHTML.includes('+')) {
-        percentColor[i].style.color = 'green';
-        cardCounter++;
-      } else {
-        percentColor[i].style.color = 'red';
-        cardCounter++;
-      }
-    }
+    let updateBtn = node.querySelector('.updateBtn');
+    updateBtn.addEventListener('click', () => {
+      event.preventDefault();
+      //When the user presses the update button, information is updated.
+      updateButton(arg);
+    });
+    return node;
   }
 }
 //check if the card is already displayed
@@ -78,8 +66,6 @@ function updateButton(arg) {
     })
     .then(obj => {
       for (let i = 0; i < allWidgets.length; i++) {
-        console.log(allWidgets);
-        console.log('hi', allWidgets[i].childNodes[0].innerHTML);
         if (obj.coinName === allWidgets[i].childNodes[0].innerHTML) {
           allWidgets[i].childNodes[1].innerText = obj.coinPercentage;
           allWidgets[i].childNodes[2].innerText = obj.coinPrice;
@@ -89,4 +75,5 @@ function updateButton(arg) {
       }
     });
 }
+
 module.exports = Widgets;
