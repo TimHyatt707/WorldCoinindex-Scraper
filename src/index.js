@@ -1,5 +1,5 @@
-let CoindexPageScraper = require('./scrapers/CoindexPagescraper');
-let Widgets = require('./components/Widgets');
+let CoindexPagescraper = require('./scrapers/CoindexPagescraper');
+let Widget = require('./components/Widget');
 let Navbar = require('./components/Navbar');
 let Form = require('./components/Form');
 let Row = require('./components/Row');
@@ -19,9 +19,9 @@ function main() {
   let row = document.getElementById('row');
   submit.addEventListener('click', () => {
     event.preventDefault();
-    let scraper = new CoindexPageScraper();
+    let scraper = new CoindexPagescraper();
     scraper.scrape(formInput.value).then(data => {
-      row.appendChild(Widgets(data));
+      row.appendChild(Widget(data));
       PercentColor();
     });
   });

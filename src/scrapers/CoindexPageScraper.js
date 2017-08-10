@@ -18,17 +18,19 @@ class CoindexPageScraper {
     let coinPrice;
     let dayHigh;
     let dayLow;
-    let coinName = doc.querySelector('.bitcoinName').querySelector('h1')
-      .innerHTML;
-    let coinPercentage = doc
-      .querySelector('.coin-percentage')
-      .querySelector('span').innerHTML;
-    let coinUrl = `https://www.worldcoinindex.com/coin/` + coinName;
+    let coinName =
+      doc.querySelector('.bitcoinName').querySelector('h1').innerHTML ||
+      'Empty';
+    let coinPercentage =
+      doc.querySelector('.coin-percentage').querySelector('span').innerHTML ||
+      'Empty';
+    let coinUrl = `https://www.worldcoinindex.com/coin/` + coinName || 'Empty';
     let coinLogoUrl =
       `https://www.worldcoinindex.com/Content/img/coins/v-636096405508202311/` +
-      coinName +
-      '.png';
-    let coinPriceBitcoin = doc.querySelector('.span-coinprice').innerHTML;
+        coinName +
+        '.png' || 'Empty';
+    let coinPriceBitcoin =
+      doc.querySelector('.span-coinprice').innerHTML || 'Empty';
     //If statement that fixes a bug with the currency displayed
     if (coinPriceBitcoin.includes('$') !== true) {
       coinPrice = 'Ƀ' + coinPriceBitcoin;
@@ -36,12 +38,12 @@ class CoindexPageScraper {
         .querySelector('.coin-high')
         .querySelector('span')
         .innerHTML.trim();
-      dayHigh = ' Ƀ' + dayHigh;
+      dayHigh = ' Ƀ' + dayHigh || 'Empty';
       dayLow = doc
         .querySelector('.coin-low')
         .querySelector('span')
         .innerHTML.trim();
-      dayLow = ' Ƀ' + dayLow;
+      dayLow = ' Ƀ' + dayLow || 'Empty';
     } else {
       let coinPriceInDollars = arg => {
         arg = arg.slice(3);
@@ -53,17 +55,17 @@ class CoindexPageScraper {
         }
         return result;
       };
-      coinPrice = coinPriceInDollars(coinPriceBitcoin.trim());
+      coinPrice = coinPriceInDollars(coinPriceBitcoin.trim()) || 'Empty';
       dayHigh = doc
         .querySelector('.coin-high')
         .querySelector('span')
         .innerHTML.trim();
-      dayHigh = this.trimCoinHighLow(dayHigh);
+      dayHigh = this.trimCoinHighLow(dayHigh) || 'Empty';
       dayLow = doc
         .querySelector('.coin-low')
         .querySelector('span')
         .innerHTML.trim();
-      dayLow = this.trimCoinHighLow(dayLow);
+      dayLow = this.trimCoinHighLow(dayLow) || 'Empty';
     }
     return {
       coinName, // ES6 shortcut coinName: coinName

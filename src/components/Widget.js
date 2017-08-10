@@ -1,7 +1,7 @@
 const { div, p, img, button } = require('elementx');
-let CoindexScraper = require('./../scrapers/CoindexPagescraper');
+let CoindexPagescraper = require('./../scrapers/CoindexPagescraper');
 
-function Widgets(arg) {
+function Widget(arg) {
   console.log(arg);
   //Displays an alert if a user inputs a widget that already exists
   if (cardCheck(arg)) {
@@ -57,7 +57,7 @@ function cardCheck(arg) {
 }
 
 function updateButton(arg) {
-  let updateScraper = new CoindexScraper();
+  let updateScraper = new CoindexPagescraper();
   let allWidgets = document.getElementsByClassName('parent');
   updateScraper
     .scrape(arg.coinUrl)
@@ -76,4 +76,4 @@ function updateButton(arg) {
     });
 }
 
-module.exports = Widgets;
+module.exports = Widget;
