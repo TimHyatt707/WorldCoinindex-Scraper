@@ -21,3 +21,6 @@ Example URL to input : "https://www.worldcoinindex.com/coin/ethereum"
 -Switching between the price of a cryptocurrency in bitcoin and US dollars
 -A small graph to go alongside each cryptocurrency to reflect 24 hour changes
 -An animation represent that a widget is loading while the web scraper works.
+
+//Surge website
+http://military-scarf.surge.sh/
