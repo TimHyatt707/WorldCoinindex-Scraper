@@ -29,10 +29,6 @@ function Form() {
     )
   );
   return node;
-  // const bottomRow = div({ id: 'bottomRow', class: 'row' });
-  // let $root = document.getElementById('root');
-  // $root.appendChild(node);
-  // $root.appendChild(bottomRow);
 }
 
 module.exports = Form;
