@@ -1,5 +1,5 @@
 Cryptocurrency Widget Generator
-![Alt text](/../public/screenshots/Example.png?raw=true "Example Screenshot")
+![Alt text](https://i.imgur.com/VCqNl5M.png)
 
 Tools used
 -Materialize(CSS Framework)
